@@ -1,0 +1,23 @@
+tips_count : ptc852
+first_visit_attachment: fva853
+daysSinceInstallation: dsi854
+installDate: id855
+isTooltipClosed: itc856
+lastTooltipOpenDate: ltod857
+first_attachment_click_count: facc859
+added_trial_days: atd860
+isCaptionUsed: icu861
+countOfExportUsed: coeu862
+lastDayExportUsed: ldeu863
+
+content.js : my-proc.js
+translate.js:prot.js
+data.js: prodt.js
+content.css: my-proc.css
+inject.js:piject.js
+background.js: bcgnd.js
+popup.js:pppup.js
+popup.css: pppup.css
+ga-code.js:pgcod.js
+popup.html:pupiop.html
+messenger.js:mesppi.js

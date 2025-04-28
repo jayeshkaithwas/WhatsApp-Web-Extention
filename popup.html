@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="js/library/jquery.js"></script>
+        <script src="js/library/intlTelInput.min.js"></script>
+        <script src="js/library/intlTelInput.utils.js"></script>
+        <script src="js/library/driver.js.iife.js"></script>
+        <script src="js/library/libphonenumber.min.js"></script>
+        <script src="js/library/papaparse.min.js"></script>
+        <script src="js/library/ajax_libs_xlsx_0.14.3_xlsx.full.min.js"></script>
+        <script src="js/data.js"></script>
+        <script src="js/driver.js" ></script>
+        <script src="js/ga-code.js"></script>
+        <script src="js/popup.js"></script>
+        
+        <link href='https://fonts.googleapis.com/css?family=PT Sans Caption' rel='stylesheet'>
+        <link rel="stylesheet" href="css/intlTelInput.css">
+        <link rel="stylesheet" href="css/driver.css">
+        <link rel="stylesheet" href="css/popup.css">
+    </head>
+    <body>
+        <div class="background_overlay" hidden></div>
+        <div class="how_to_use_buttons" hidden>
+            <div class="how_to_use_left how_to_use_button CtaBtn" hidden>
+                <img src="logo/pro-arrow-left.png" alt="right_arrow">
+                <span>Prev</span>
+            </div>
+            <div class="how_to_use_right how_to_use_button CtaBtn" hidden>
+                <span>Next</span>
+                <img src="logo/pro-arrow-right.png" alt="left_arrow">
+            </div>
+        </div>
+
+        <div class='confirm-ovelay'  style=" display: none; position: fixed; z-index: 99999; height: 100vh; width: 100% !important;align-items: center !important;justify-content: center !important;">
+            <div class="popup_overlay"></div>
+            <div class='confirm' style="padding: 10px 12px;">
+                <div class="confirm-overlay content-overlay">
+                    <div class="confirm-overlay warning-img-overlay">
+                        <img src="logo/pro-warning.png" alt="">
+                    </div>
+                    <div class='confirm-msg'> 
+                    <p data-translate-text>Sending more than three attachments at a time might lead to your number getting <b>banned</b>.<br>Do you want to continue?</p>  
+                    </div> 
+                </div>
+             <footer> 
+                 <div class='controls'> 
+                     <button class='CtaBtn button button-default doAction'>Continue</button>  
+                     <button class='CtaBtn button button-danger cancelAction'>No</button>  
+                 </div> 
+             </footer> 
+          </div> 
+        </div>
+
+        <div class="header-tabs-container">
+            <div style="display: flex; justify-content: center;">
+                <div id="select_functionality_container" class="CtaPopupHeader header-tab functionality-tab active">
+                    <div id="select_functionality" class="header-tab-content functionality-tab-content">
+                        <img src="logo/pro-logo-img.png" id="ps-logo-left" />
+                        <div style="padding: 8px;" id="ps-logo-right" class="headerLogoText">WA Sender</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <div id="select_premium_container" class="CtaPopupHeader header-tab premium-tab">
+                    <div id="select_premium_features" class="header-tab-content premium-tab-content">
+                        <img id="add_business_img" style="width: 90%;
+                        height: 90%;" src="logo/pro-plus.png" />
+                        <div id="add_business_text" style="color: #009A88; font-size: 14px;">
+                            <span id="non_premium_header_text"></span>
+                            <span id="user_info_text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="header-separator-line">
+        <div class="premium_features_parent_div">
+            <div class="paused_campaign_strip" hidden>
+                <div class="paused_container">
+                    <p data-translate-text>Your previous campaign was paused.</p>
+                    <div class="paused_button_container">
+                        <button class="paused_resume_button CtaBtn"><img src="logo/pro-resume_logo.png" alt="resume_logo">Resume</button>
+                        <button class="paused_stop_button CtaBtn"><span class="circle"></span>Stop</button>
+                    </div>
+                </div>
+            </div>
+            <div id="show_premium_features" style="background: #000;display: none;width: 100%;">
+                <!-- showing user info -->
+                <div class="premium_feature_block premium_featured_number" style="flex-direction: column;">
+                    <div id="premium_enabled_on" style="color: #fff; font-weight: 400; font-size: 14px; line-height: 15.53px;">
+                        <p id="plan_details"></p>
+                        <p id="customer_email"></p>
+                    </div>
+                    <div style="margin: 0px; display: none;position:relative;align-items:flex-start;gap:10px;flex-direction:column;justify-content:center;" id="transfer_premium_button">
+                        <!-- <p id="show_country_selector" style="color: #009a88;margin: 0px; font-weight: 600; font-size: 14px; cursor: pointer;">Transfer premium to another number</p> -->
+                        <div id="premium_country_selector_container" style="position:relative;display:flex;gap:5px;align-items:center;" class="hide">
+                            <span style="font-size:13px;color:#fff;">From <span id="my_current_number" style="color:#009a88;font-weight:bold;"></span> to : </span>
+                            <input type="tel" id="country-code-input-2">
+                            <input type="number" id="premium_number_input" style="border-radius:5px;height:18px;padding:2px 5px;border:none;outline:none;width:110px;">
+                            <div id="request_transfer_btn" style="background:#009a88;padding:5px 10px;font-size:14px;border-radius:8px;font-weight:bold;color:#009a88;color:#fff;cursor:pointer;">Request</div>
+                        </div>
+                    </div>
+                    <p id="transfer_premium_error" style="color: #F40B0B;margin: 0px; font-size: 13px; display: none;">New number cannot be the same as the existing number.</p>
+                    <!-- <div class="premium_feature_block" id="buy_premium_block" style="border:none;"></div> -->
+                </div>
+                <div class="premium_feature_block mult_account_block hide" style="flex-direction: column;"></div>
+                <div class="premium_feature_block what_is_advancepromo_block" style="display: none;">
+                    <div style="display: flex; align-items: start; justify-content: center; flex-direction: column;">
+                        <span class="question" style="color: #009a88; margin: 5px 0px; font-weight: bold; font-size: 14px;">What is AdvancePromo?</span>
+                        <span class="answer"  style="color: #fff;">It's a free trial of Advance Premium provided to certain lucky users</span>
+                    </div>
+                </div>
+                <!-- <div class="premium_feature_block" id="buy_premium_block"></div> -->
+                <!-- showing user info -->
+                <!-- showing percentage utilisation of premium -->
+                <!-- <div class="premium_feature_block">
+                    <div class="premium-pie-section" style="color: #fff;"> -->
+                        <!-- for the circle -->
+                        <!-- <div class="pie-container">
+                            <div id="pie">
+                                <span class="premium-utlisation-precentage">70%</span>
+                            </div>
+                        </div> -->
+                        <!-- for the text -->
+                        <!-- <div id="premium_utilisation_text" style="font-size:14px;">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- showing percentage utilisation of premium -->
+                <!-- invoice feature -->
+                <div class="premium_feature_block invoice_feature_block">
+                    <div class="invoice_upper">
+                        <p style="color:#fff; font-weight:700; font-size:16px">Receipt: </p>
+                        <select name="invoice_month" id="invoice_input" style="height: fit-content; padding:5px">
+                        </select>
+                        <a id="download_invoice_button" class="CtaBtn" href="#">
+                            <img id="invoice_button_loader" src="logo/pro-loader.svg" alt="" style="display: none;">
+                            <span id="invoice_button_text">Download</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- invoice feature  -->
+
+                <div class="premium_features_divider">
+                    <p style="z-index: 1000; color: #fff; margin: 0px; margin-left: 16px;">Features :</p>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-broadcast.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Unlimited Broadcast message</div>
+                        <div class="premium_feature_desc" data-translate-text>Broadcast to multiple chats at once, effortlessly scaling your communication. No need for template approvals and extra fees.</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-delivery-report.gif" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Report</div>
+                        <div class="premium_feature_desc" data-translate-text>Get a detailed report of your campaigns to improve sales and utilize WA Sender to the fullest</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-piggy-bank.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Reduce time delay & Add random delay</div>
+                        <div class="premium_feature_desc" data-translate-text>Save time and quickly send messages by reducing the time gap between messages.  You can also randomise the time gap between messages</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img style="scale: 1.6;" src="logo/pro-attachment.gif" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>File Attachment</div>
+                        <div class="premium_feature_desc" data-translate-text>You can attach and send images, documents, videos, etc. along with your message to users</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-chat (1).png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Customise your message</div>
+                        <div class="premium_feature_desc" data-translate-text>You can customize your message according to the customer with their name, email, order number, etc</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-closed-caption (1).png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Add Caption</div>
+                        <div class="premium_feature_desc" data-translate-text>Add a caption to your attachments</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-buisness-chat.png" class="premium_feature_image" style="filter: brightness(0.8);" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>WhatsApp Chat Link</div>
+                        <div class="premium_feature_desc" data-translate-text>Generate a link to your WhatsApp number's chat and let customers directly connect with you</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-schedule.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Schedule your messages</div>
+                        <div class="premium_feature_desc" data-translate-text>Schedule your campaign at a future time</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-message.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Quick Replies</div>
+                        <div class="premium_feature_desc" data-translate-text>Respond to your customers quickly, with pre-saved responses</div>
+                    </div>
+                </div>
+                <!-- <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img style="scale: 2;" src="logo/pro-customer-support.gif" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Active support</div>
+                        <div class="premium_feature_desc" data-translate-text>You can click on 'Chat Support' on the extension to get your queries resolved. We also provide call and video support.</div>
+                    </div>
+                </div> -->
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-paper.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Batching</div>
+                        <div class="premium_feature_desc" data-translate-text>Send your messages in batches and add a time interval between the batches </div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img style="scale: 1.6;" src="logo/pro-upload-excel.gif" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Upload excel of numbers</div>
+                        <div class="premium_feature_desc" data-translate-text>You can directly upload an excel sheet of numbers you want to send your message to without having to type or copy-paste</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-export-contact.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Group Export</div>
+                        <div class="premium_feature_desc" data-translate-text>Download unsaved contacts from groups </div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-message-formatting.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Message Formatting</div>
+                        <div class="premium_feature_desc" data-translate-text>You can format your message - BOLD, italic, strikethrough, and Emojis</div>
+                    </div>
+                </div>
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-stop.png" class="premium_feature_image" style="filter: brightness(0.9);" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Stop Campaign</div>
+                        <div class="premium_feature_desc" data-translate-text>Ability to stop messaging mid-campaign</div>
+                    </div>
+                </div>
+                <!-- <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-excel-2.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Real-Time Excel Preview</div>
+                        <div class="premium_feature_desc" data-translate-text>Get a real-time preview of uploaded CSV of numbers</div>
+                    </div>
+                </div> -->
+                <div class="premium_feature_block">
+                    <div class="premium_feature_image_block">
+                        <img src="logo/pro-save-templates.png" class="premium_feature_image" />
+                    </div>
+                    <div class="premium_feature_text_block">
+                        <div class="premium_feature_title" data-translate-text>Save Templates</div>
+                        <div class="premium_feature_desc" data-translate-text>Use saved message template in a single click</div>
+                    </div>
+                </div>
+
+                <!--faqs section-->
+                <div class="premium_features_divider">
+                    <p style="z-index: 1000; color: #fff; margin: 0px; margin-left: 16px;">FAQs :</p>
+                </div>
+                <div class="premium_feature_faq"></div>
+                <!--faqs section-->
+
+                <div class="premium_feature_block" id="premium_support_block">
+                    <!-- <div class="premium_feature_desc CtaBtn" id="request_chat_premium" style="cursor: pointer;margin-bottom: 8px;font-size: 14px;display: flex;"><img src="logo/pro-chat-white.png"  style="width: 24px;margin-right: 16px;" /><div style="margin-top: 3px;" data-translate-text>Request for chat support</div></div>
+                    <div class="premium_feature_desc CtaBtn" id="request_zoom_premium" style="cursor: pointer;margin-bottom: 8px;font-size: 14px;display: flex;"><img src="logo/pro-video-call.png"  style="width: 24px;margin-right: 16px;"/><div style="margin-top: 3px;" data-translate-text>Request for a zoom/meet call support</div></div>
+                    <div class="premium_feature_desc CtaBtn" id="request_call_premium" style="cursor: pointer;font-size: 14px;display: flex;"><img src="logo/pro-phone-call.png"  style="width: 24px;margin-right: 16px;"/><div style="margin-top: 3px;" data-translate-text>Request for a call support</div></div> -->
+                </div>
+                <!-- <div class="premium_feature_block" id="buy_premium_block" style="text-align: center;"> -->
+                <!--     <div id="buy_premium_popup" class="premium_button CtaBtn">Buy Premium</div> -->
+                <!--     <div class="premium_feature_desc" style="margin-top: 8px;text-align: center;" data-translate-text>Payments are implemented using secure gateway like Stripe, Razorpay</div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+
+        <div id="popup_functionality" style="background: #fff;width: 100%;">
+            <div id="add_number_popup" style="display: none;">
+                <div style="background-color: rgba(0, 0, 0, 0.5);opacity: .95 !important;height: 2848px;width: 1440px;
+                    position: fixed;left: 0px;top: 0px;z-index: 1001;"></div>
+                <div style="position: fixed;z-index: 1002;background: #fff;padding: 12px;top: 240px;">
+                    <div style="font-size: 16px;line-height: 29px;color: #62D9C7;" data-translate-text>Please enter your WhatsApp number to continue</div>
+                    <div style="display: flex;margin: 18px 16px;">
+                        <input type="text" id="my_number_code" name="my_number_code" style="width: 40px;" placeholder="+91">
+                        <input type="text" id="my_number" name="my_number" placeholder="9876543210" style="margin: 0px 12px;">
+                        <button class="CtaBtn" id="my_number_submit" style="border: 0px;margin-left: 8px;width: 120px;height: 32px;background-color: #62D9C7;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;" data-translate-text>
+                            Submit</button>
+                    </div>
+                    <div style="font-weight: bold;font-size: 10px;line-height: 14px;color: #A4A2A2;" data-translate-text>Note : We care about your privacy. Your contact number is required just for the basic functioning of the extension. The features of the extension will not work properly in case of incorrect number.</div>
+                </div>
+            </div>
+
+            <div id="confirm_number_popup" style="display: none;">
+                <div style="background-color: rgba(0, 0, 0, 0.5);opacity: .95 !important;height: 2848px;width: 1440px;
+                    position: fixed;left: 0px;top: 0px;z-index: 1001;"></div>
+                <div style="position: fixed;z-index: 1002;background: #fff;padding: 12px;top: 240px;">
+                    <div style="font-size: 16px;line-height: 29px;color: #62D9C7;margin-left: 12px;" data-translate-text>You won't be able to edit your number once submitted. Please confirm the number : </div>
+                    <div id="confirm_my_number" style="margin: 12px auto;font-size: 14px;margin-left: 18px;">+91-1234567890</div>
+                    <div style="display: flex;">
+                        <button class="CtaBtn" id="confirm_number_submit" style="border: 0px;margin-left: 8px;width: 120px;height: 32px;background-color: #62D9C7;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;" data-translate-text>
+                            Submit</button>
+                        <button class="CtaBtn" id="edit_number_submit" style="border: 1px solid #62D9C7;margin-left: 8px;width: 120px;height: 32px;background-color: #fff;border-radius: 4px;color: #62D9C7;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;" data-translate-text>
+                            Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="help_popup" style="display: none;">
+                <div class="popup_overlay"></div>
+                <div class="help_type">
+                    <div class="attachment_popup_content">
+                        <div style="font-size: 12px; margin:5px 3px; display: flex;">
+                            <img src="logo/pro-sound-bell.png" style="width: 14px;height: 14px;margin-right: 4px;" />
+                            <span data-translate-text>Read the following instructions before sending the attachment</span>
+                        </div>
+                        <div class="instructions">
+                            <p>1. Click on the icon of <strong><img src="/logo/pro_attach_symbol.png" alt="icon"> Attachment</strong> inside the text box inside the extension</p>
+                            <p>2. Select files you'd like to send. You can select multiple</p>
+                            <p>3. You can click on <strong>Add Caption</strong> to add caption to your attachment</p>
+                            <p>4. Click on <strong>Send</strong> button inside the extension</p>
+                        </div>
+                        <button class="CtaBtn help_popup_okay">Okay</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chat_link_info_popup" style="display: none;">
+                <div style="background-color: rgba(0, 0, 0, 0.5);opacity: .95 !important;height: 2848px;width: 1440px;
+                position: fixed;left: 0px;top: 0px;z-index: 1001;"></div>
+                <div style="position: fixed;z-index: 1002;background: #fff;padding: 12px;top: 112px;">
+                    <div>
+                        <span data-translate-text>Using Business Chat Link, you can share a chat link with your customers that they can use to start a chat with you. You can incorporate it on your website or share on different platforms.</span>
+                        <br/>
+                        <span data-translate-text>You can also set a message template for customers to use when they open the chat link.</span>
+                    </div>
+                    <button class="CtaBtn" id="chat_link_info_popup_okay" style="border: 0px;margin: 8px 120px;width: 180px;height: 32px;background-color: #62D9C7;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;">
+                        Okay</button>
+                </div>
+            </div>
+
+            <div id="main_container">
+                <div id="left_section">
+                    <div style="margin-bottom: 4px;">
+                        <div class="type_input_box">
+                            <div class="radio_btns">
+                                <div class="radio_btn">
+                                    <input type="radio" id="message_type_numbers" name="message_type" checked value="numbers">
+                                    <span><label for="message_type_numbers" style="cursor:pointer;">Numbers</label></span>
+                                </div>
+                                <div class="radio_btn group_id">
+                                    <input type="radio" id="message_type_groups" name="message_type" value="groups">
+                                    <span><label for="message_type_groups" style="cursor:pointer;">Groups</label></span>
+                                </div>
+                                <div class="radio_btn contact_id">
+                                    <input type="radio" id="message_type_contact" name="message_type" value="contacts">
+                                    <span><label for="message_type_contact" style="cursor:pointer;">Contacts</label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="groups_box" style="flex-direction:column;">
+                            <img id="delete-all" src="./logo/pro-delete-icon.png" title="Delete All" class="tool-icon">
+                            <p class="text_title radio-item" style="margin: 0px" id="box_label">Select groups to message</p>
+                            <div class="groups_display_box custom-scrollbar">
+                                <p style="color:gray;font-size:13px;margin:0px;">Select groups from the dropdown . . .</p>
+                            </div>
+                            <div id="group_selector_box" class="group_selector_box dropdown-box">
+                                <div class="groups_searchbar">
+                                    <img src="logo/pro-search-icon.svg" alt="" style="width:20px;margin-bottom:5px"/>
+                                    <input type="text" placeholder="Search group by name" data-translate-placeholder class="search_group_input"/>
+                                    <div class="select_all">
+                                        <input type="checkbox" name="select_all" title="Select all" id="select-all">
+                                        <span id="select_all_text">Select All</span>
+                                    </div>
+                                </div>
+                                <div id="groups_container" class="dropdown-container custom-scrollbar hide">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="numbers-box">
+                            <div class="navigation_outer_box_down navigation_container" style="top:-60px;left:250px;" hidden>
+                                <div class="msg-box-down" style="width: 100%;">
+                                    <p data-translate-text>Enter numbers you want to send message to</p>
+                                    <div class="arrow" style="left: 10px;"></div>
+                                </div>
+                            </div>
+
+                            <p class="text_title radio-item" style="margin: 0px" data-translate-text>Enter numbers to message</p>
+                            <input type="tel" id="country-code-input">
+                            <div id="numbers-display" class="custom-scrollbar"></div>
+                            
+                            <div id="input-container">
+                                <img id="delete-all-numbers" src="./logo/pro-delete-icon.png" title="Delete All Numbers" class="tool-icon" style="display: none;">
+                                <textarea type="text" id="numbers" hidden></textarea>
+                                <textarea type="text" id="numbers-input" placeholder="Enter numbers separated by comma or one below the other. Eg. +91 8123456789, +1 2015550123"></textarea>
+                            </div>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1Ews1J9VP4j-uoE1wmwKPsaHNEPPV8tjiXeSLk5rHtcM/edit?usp=sharing" target="_blank" id="download_template" class="CtaBtn" style="color: #009A88; cursor: pointer;margin: 7px;display: flex; justify-content: center; align-items: center; text-decoration: none; position: absolute; bottom: 0; left: 0;border-bottom: 1px solid #009a88; padding-bottom: 3px;">
+                                <img src="logo/pro-excel_svg.svg" style="filter: contrast(0.5); width: 14px;padding-right: 4px;" />
+                                <span data-translate-text>Example</span>
+                            </a>
+    
+                            <!-- <div id="invalid-numbers" class="invalid-numbers CtaBtn">
+                                <span id="invalid-count" class="invalid-count"></span>
+                                <span>Invalid Format</span>             
+                            </div> -->
+    
+                            <div class="tools-container">
+                                <div id="invalid-numbers" class="invalid-numbers CtaBtn">
+                                    <span id="invalid-count" class="invalid-count"></span>
+                                    <span>Invalid Format</span>             
+                                </div>
+                                <span id="uploaded-csv" hidden="true"></span>
+                                <label class="CtaBtn upload_excel_box" style="color: #009A88;text-decoration: none; margin: 0px 10px;cursor: pointer;display: inline-flex;">
+                                    <img src="logo/pro-upload_excel.png" style="width: 18px;padding-right: 4px;  filter: contrast(0.5);" />
+                                    <span class="upload_excel_text" style="border-bottom: 1px solid #009a88; padding-bottom: 2px; display: flex; justify-content: center; align-items: center; gap: 2px;">
+                                        <span data-translate-text>Upload Excel</span>
+                                        <img src="logo/pro-excel_svg.svg" style="height: 12px;">
+                                    </span>
+                                    <input type="file" id="csv" value="Upload" accept=".xls,.xlsx,.ods,.csv" style="display: none;" />
+                                </label>
+    
+                                <div id="campaign-box" class="campaign-box dropdown-box">
+                                    <div id="campaign-selector" class="campaign-selector dropdown CtaBtn">
+                                        <p class="text">Campaign Numbers</p>
+                                        <img src="./logo/pro-down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
+                                    </div>
+                                    <img id="campaign-save-icon" src="./logo/pro-template-save.png" class="tool-icon hide" title="Save Numbers">
+                                    <div id="campaigns-container" class="campaigns-container dropdown-container custom-scrollbar hide">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="navigation_outer_box_up navigation_container" style="bottom:-50px;right:180px;" hidden>
+                                <div class="msg-box-up">
+                                    <p data-translate-text>or directly upload excel</p>
+                                    <div class="arrow"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="campaign-save-popup-container main-popup-container hide" style="font-family: 'PT Sans Caption'">
+                            <div class="popup_overlay"></div>
+                            <div class="campaign-save-popup main-popup">
+                                <div class="popup-header">
+                                    <h3 class="title" style="font-family: 'PT Sans Caption'">Save Campaign Numbers</h3>
+                                    <span class="campaign-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                </div>
+                                <form id="save-campaign-form">
+                                    <input type="hidden" id="edit-index" value="">
+                                    <textarea style="font-family: 'PT Sans Caption'" id="campaign-numbers" rows="5" cols="20"
+                                        title="Campaign Numbers" required></textarea>
+                                    <div class="save-as">
+                                        <p class="text" style="font-family: 'PT Sans Caption'">Save as</p>
+                                        <input style="font-family: 'PT Sans Caption'" type="text" id="campaign-name" placeholder="Campaign Name"
+                                            title="Campaign Name" maxlength="15" required data-translate-placeholder>
+                                    </div>
+                                    <button class="btn CtaBtn" style="font-family: 'PT Sans Caption'" type="submit">Save Campaign Numbers</button>
+                                </form>
+                            </div>
+                        </div>    
+                          
+                        <div class="invalid-excel-popup-container hide" id="invalid-excel-popup" style="font-family: 'PT Sans Caption'">
+                            <div class="popup_overlay"></div>
+                            <div class="invalid-excel-popup-content">
+                                <div class="popup-header">
+                                    <div class="title-div">
+                                        <img src="./logo/pro-error.png" alt="Oops!">
+                                        <h3 class="title" style="font-family: 'PT Sans Caption'">Alert : Invalid Excel format detected</h3>
+                                    </div>
+                                    <span class="invalid-excel-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                </div>
+                                <div class="invalid-excel-popup-body">
+                                    <div class="invalid-excel-popup-description">
+                                        The message won't get sent to the first number in the Excel. <b>Please add Headers in the first row. </b><br>
+                                        <span style="margin-top: 10px;font-size: 14x;">Check template excel below</span>
+                                    </div>
+                                    <div class="invalid-excel-popup-buttons">
+                                        <button class="template-excel-button CtaBtn">
+                                            <a href="https://docs.google.com/spreadsheets/d/1Ews1J9VP4j-uoE1wmwKPsaHNEPPV8tjiXeSLk5rHtcM/edit?usp=sharing" target="_blank" >Template Excel</a>
+                                        </button>
+                                        <button class="upload-anyway-button CtaBtn" id="upload-anyway-button">
+                                            Upload anyway
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>               
+    
+                        <div class="invalid-numbers-popup-container main-popup-container hide">
+                            <div class="popup_overlay"></div>
+                            <div class="invalid-numbers-popup main-popup">
+                                <div class="popup-header">
+                                    <h3 class="title">
+                                        <span id="popup-invalid-count" class="invalid-count"></span>
+                                        Invalid Format
+                                    </h3>
+                                    <span class="invalid-numbers-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                </div>
+                                <div class="popup-content">
+                                    <span>Common Reasons for invalid numbers:</span>
+                                    <ul>
+                                        <li class="reason">The number format is incorrect.</li>
+                                        <li class="reason">The country code in the number is incorrect.</li>
+                                    </ul>
+                                    <br>
+                                    <span>Actions:</span>
+                                    <ul>
+                                        <li class="action">The <b>"Remove All"</b> button will remove all the invalid numbers.</li>
+                                        <li class="action">The <b>"Download Excel"</b> button will download an Excel file containing the invalid numbers along with their respective reasons.</li>
+                                    </ul>
+                                </div>
+                                <div class="popup-footer">
+                                    <div class="popup-buttons">
+                                        <button id="remove-all-invalid" class="CtaBtn">Remove All</button>
+                                        <button id="download-all-invalid" class="CtaBtn">Download Excel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                 
+                    </div>
+    
+                    <div class="text_title_1" style= "margin-left: 0px;padding-top: 8px;padding-bottom: 4px; text-align: end;">
+                        <span style="color: #707274;font-size: 12px;font-weight: 500;">
+                            <span style="font-weight: bold;margin-right: 12px;">*text*</span>
+                            <span style="font-style: italic;margin-right: 12px;">_text_</span>
+                            <span style="text-decoration: line-through;margin-right: 12px;">~text~</span>
+                            <a href="https://getemoji.com/" target="_blank" style="color: #707274;">EMOJIS</a>
+                        </span>
+                    </div>
+    
+                    <div class="message-box">
+                        <div class="navigation_outer_box_down navigation_container" style="left:200px;top:-60px;" hidden>
+                            <div class="msg-box-down">
+                                <p data-translate-text>Enter message that you want to send</p>
+                                <div class="arrow" style="left: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <span class="text_title" data-translate-text>Enter Message</span>
+                        <textarea type="text" id="message" placeholder="Type your message here..." data-translate-placeholder></textarea><br />
+                        <div class="tools-container">
+                            <div id="attachments-container">
+                            </div>
+                            
+                            <div class="attachment_box">
+                                <div class="navigation_outer_box_up navigation_container" style="bottom:-50px;left:0px;" hidden>
+                                    <div class="msg-box-up" style="width: max-content;">
+                                        <p data-translate-text>You can also add attachments</p>
+                                        <div class="arrow" style="left: 10px;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="attach_symbol tooltip-trigger">
+                                    <input type="file" id="select-attachments" multiple hidden>
+                                    <img src="/logo/pro_attach_symbol.png" alt="Add Attachment" id="add-attachments" class="tool-icon shimmer">
+                                    <div class="add-tooltip-overlay hide"></div>
+            
+                                    <div class="tooltip-popup-container hide">
+                                        <div class="tooltip-popup-content">
+                                            <div class="tooltip-popup-row">
+                                                <div class="tooltip-popup-title" data-translate-text>
+                                                    Did you know?
+                                                </div>
+                                                <div class="tooltip-popup-image">
+                                                    <img src="logo/pro-tooltip_popup_image.png" alt="tooltip-popup-image">
+                                                </div>
+                                                <div class="close-tooltip">
+                                                    <img  src="./logo/pro-closeBtn.png" alt="x">
+                                                </div>
+                                            </div>
+                                            <div class="tooltip-popup-description" data-translate-text>
+                                                You can now select and send multiple attachments to the same number
+                                            </div>
+                                            <button class="attachment-instructions-btn attachments">
+                                                <span class="attachment-instructions-icon attachment-instructions">i</span>
+                                                <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                                    data-translate-text>How to send attachments?</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div id="template-box" class="template-box dropdown-box">
+                                <div id="template-selector" class="template-selector dropdown CtaBtn">
+                                    <p class="text">Template</p>
+                                    <img src="./logo/pro-down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
+                                </div>
+    
+                                <img id="template-save-icon" src="./logo/pro-template-save.png" class="tool-icon hide">
+                                <div id="templates-container" class="templates-container dropdown-container custom-scrollbar hide">
+                                </div>
+                            </div>
+                        </div>
+                        </button>
+                        <!-- <div class="attachment-instruction-secondary">
+                            <button class="attachment-instructions-btn">
+                                <span class="attachment-instructions-icon attachment-instructions">i</span>
+                                <span class="attachment-instructions-text attachment-instructions CtaBtn" data-translate-text>How to send attachments?</span>
+                            </button>
+                        </div>  -->
+                    </div>
+                    <div class="customize_container">
+                        <div class="customize_section">
+                            <div class="customize_heading">Customizations:</div>
+                        </div>
+                        <!-- <a href="" target="_blank" class="customization-instructions-btn" style="position:absolute;bottom:-30px;right:0px;">
+                            <span class="caption-instructions-icon">i</span>
+                            <span class="caption-instructions-text CtaBtn" data-translate-text>How to use customization?</span>
+                        </a> -->
+                    </div>       
+                    <div class="template-save-popup-container main-popup-container hide" style="font-family: 'PT Sans Caption'">
+                        <div class="popup_overlay"></div>
+                        <div class="template-save-popup main-popup">
+                            <div class="popup-header">
+                                <h3 class="title" style="font-family: 'PT Sans Caption'">Add Template</h3>
+                                <span class="template-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                            </div>
+                            <form id="save-template-form">
+                                <input type="hidden" id="edit-template-index" value="">
+                                <textarea style="font-family: 'PT Sans Caption'" id="template-msg" rows="5" cols="20"
+                                    title="Template Message" required></textarea>
+                                <div class="save-as">
+                                    <p class="text" style="font-family: 'PT Sans Caption'">Save as</p>
+                                    <input style="font-family: 'PT Sans Caption'" type="text" id="template-name"
+                                        placeholder="Template Name" title="Template Name" maxlength="15" required data-translate-placeholder>
+                                </div>
+                                <button class="btn CtaBtn" style="font-family: 'PT Sans Caption'" type="submit">Save Template</button>
+                            </form>
+                        </div>
+                    </div>
+    
+                    <div id="add-caption-container" style="margin-bottom: 8px;margin-left: 3px; margin-top: 15px;" hidden= "true">
+                        <div class="checkbox-section" style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <input type="checkbox" name="checkbox" id="caption-checkbox" style="cursor: pointer;">
+                            <label for="checkbox" style="color: #000; font-weight: bold; font-size: 12px;" data-translate-text="">Add Caption</label>
+                            <div class="add-tooltip-overlay hide"></div>
+                            <div class="caption_customization_input_div hide" style="display: flex; justify-content: center; align-items: center;">
+                                <input type="checkbox" name="add_caption_customization" id="caption_customization" style="cursor:pointer; margin-left: 20px;">
+                                <label for="add_caption_customization" style="color: #000; font-weight: bold; font-size: 12px;" data-translate-text="">Add customization to caption</label>
+                            </div>
+                        </div>
+                        <div id="caption-section" hidden="true">
+                            <div style="display: flex; flex-direction: column; align-items: flex-end">
+                                <div style="display:flex; flex-direction:column;" class="captionMain">
+                                    <div class="captionTextAreas">
+                                    </div>   
+                                        <div class="caption_customize_container" style="margin-top:-4px">
+                                        <div class="caption_customize_section">
+                                            <!-- <div class="customize_heading">Customizations:</div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="caption-tooltip hide">
+                            <div class="caption-tooltip-content">
+                                <div class="tooltip-popup-row">
+                                    <div class="tooltip-popup-title" data-translate-text>
+                                        Did you know?
+                                    </div>
+                                    <div class="tooltip-popup-image">
+                                        <img src="logo/pro-cc.png" alt="tooltip-popup-image">
+                                    </div>
+                                    <div class="close-tooltip">
+                                        <img  src="./logo/pro-closeBtn.png" alt="x">
+                                    </div>
+                                </div>
+                                <div class="tooltip-popup-description" data-translate-text>
+                                    You can also add caption to the attachment
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="action_buttons_div" style="background-color: transparent; position: relative; box-shadow: none;">
+                        <div class="navigation_outer_box_down navigation_container" style="left:10px;top:-22px;" hidden>
+                            <div class="msg-box-down">
+                                <p data-translate-text>Click to send messages</p>
+                                <div class="arrow" style="left: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="text_body" style="position: absolute; top: 0px; margin: 0px; padding: 0px;color: red;display: none;" id="error_message"></div>
+                        
+                        <button hidden class="CtaBtn" id="schedule" style="border: 0px;width: 120px;height: 32px;background-color: #2758D4;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;"> Schedule</button>
+                        <button class="CtaBtn" id="sender" style="border: 0px;width: 120px;height: 32px;background-color: #009A88;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;"> Send</button>
+                        
+                        <div id="report-box" class="report-box dropdown-box">
+                            <button id="report-selector" class="CtaBtn btn report-selector dropdown">
+                                Delivery Report
+                                <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
+                            </button>
+                            <div id="reports-container" class="dropdown-container custom-scrollbar hide"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="right_section">
+                    <div class="advance_options_container">
+                        <p class="advance_option_text" data-translate-text>More Options</p>
+
+
+                        <!-- Time Gap -->
+                        <div id="time_gap" class="advance_option_div">
+                            <div class="advance_option_row">
+                                <input type="checkbox" id="time_gap_checked" name="time_gap" value="time_gap">
+                                <label data-translate-text>Add a time gap between messages</label>
+                            </div>
+                            <div id="time_gap_type" style="display: flex; flex-direction: column; align-items: start; justify-content: center; margin: 4px 0px 0px 12px;">
+                                <div style="display: flex; align-items: center;">
+                                    <input type="radio" id="sec" name="time_gap" value="sec" checked="true" style="margin: 0px 5px;">
+                                    <input type="range" name="time_gap_sec" id="slider_time_gap_sec" min="0" max="11" value="3">
+                                    <input type="number" id="time_gap_sec" name="time_gap_sec" min="0" value="3" style="width: 40px;" placeholder="3">
+                                    <span style="margin-left: 5px;">sec</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <input type="radio" id="random" name="time_gap" value="random" style="margin: 0px 5px;">
+                                    <label for="random" id="random_label_text" class="text_color_gray">Random <span style="color: #F16539;" class="text_color_gray">(Recommended)</span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Batching -->
+                        <div id="batch" class="advance_option_div">
+                            <div class="advance_option_row">
+                                <input type="checkbox" id="batch_checked" name="batch" value="batch">
+                                <label>
+                                    <span data-translate-text>Add Batching</span>
+                                    <span style="color: #F16539;">(Recommended)</span>
+                                </label>
+                            </div>
+                            <div id="batch_info" hidden="true">
+                                <label style="display: flex;flex-direction: column;align-items: start;justify-content: center;margin: 5px 0px 2px 16px;">
+                                    <span data-translate-text>Send in batches of</span>
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                        <input type="range" name="batch_size" id="slider_batch_size" min="0" max="17">
+                                        <input type="number" id="batch_size" name="batch_size" min="1" max="500" style="width: 40px;" placeholder="50"> 
+                                        <span>messages</span>
+                                    </div>
+                                </label>
+
+                                <label style="display: flex;flex-direction: column;align-items: start;justify-content: center;margin: 5px 0px 2px 16px;">
+                                    <span data-translate-text>Add a time gap b/w batches of</span>
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                        <input type="range" name="batch_gap" id="slider_batch_gap" min="0" max="17">
+                                        <input type="number" id="batch_gap" name="batch_gap" min="1" max="500" style="width: 40px;" placeholder="30"> 
+                                        <span>seconds</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Schedule -->
+                        <div id="schedule" class="advance_option_div">
+                            <div id="schedule_div" class="advance_option_row" style="display: flex; flex-wrap: wrap;">
+                                <input type="checkbox" name="" id="schedule_checkbox">
+                                <label data-translate-text>Schedule your campaign</label>
+                                <div id="schedule_day_div" class="col_span" style="margin: 3px 0 0 0;display: none; align-items: center; width: 100%;">
+                                    <label for="schedule_day" style="white-space: nowrap; font-weight: bold;">Schedule date: </label>
+                                    <input type="date"  id="schedule_day" name="schedule_day" class="col_span" style="margin: 0 0 0 5px; height: 20px;">
+                                </div>
+                                <div id="schedule_time_div" class="col_span" style="margin: 3px 0 0 0;display: none; align-items: center; width: 100%;">
+                                    <label for="schedule_time" style="white-space: nowrap; font-weight: bold;">Schedule time: </label>
+                                    <input type="time" id="schedule_time" name="schedule_time" class="col_span" style="margin: 0 0 0 5px;">
+                                </div>
+                            </div> 
+                            <div id="scheduled_campaigns">
+                                <div id="schedule-box" class="schedule-box dropdown-box">
+                                    <button id="schedule_selector" class="CtaBtn btn schedule_selector dropdown">
+                                        View upcoming campaigns
+                                        <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
+                                    </button>
+                                    <div id="schedule_container" class="dropdown-container custom-scrollbar hide"></div>
+                                </div>
+                            </div>
+                            <div id="schedule_campaign_error" style="color: red;font-weight:normal;font-size:10px;margin:10px 0px 0px 25px;" hidden>
+                            <span data-translate-text>Schedule your next campaign after</span><br>
+                                <span style="font-weight:bold;" id="schedule_campaign_error_time"></span><span data-translate-text>to avoid overlapping</span>
+                                <span data-translate-text>of campaigns</span>
+                        </div>
+                            <div id="schedule_campaign_error2" data-translate-text style="color: red;font-weight:normal;font-size:10px;margin:10px 0px 0px 25px;" hidden>You can schedule maximum 3 campaigns at a time</div>
+                            <div style="font-weight: normal;font-size: 10px;line-height: 12px;color: #000; padding: 10px 0px 0px 25px;" id="schedule_message_div" hidden> 
+                                <span style="display: block; width: 200px;" data-translate-text>Please do not run any normal campaign before the scheduled time.</span>
+                                <div id="learn_schedule" style="color: #009A88;text-decoration: unset; cursor: pointer;" data-translate-text>Learn More</div>
+                            </div>
+                        </div>
+                        <!-- paused campaign -->
+                        <div id="paused_campaigns" class="advance_option_div">
+                            <div id="paused-campaign-box" class="paused-campaign-box dropdown-box">
+                                <button id="paused_campaign_selector" class="CtaBtn btn dropdown">
+                                    Resume paused campaigns
+                                    <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
+                                </button>
+                                <div id="paused_campaign_container" class="dropdown-container custom-scrollbar hide"></div>
+                            </div>
+                        </div>
+                        <!-- paused campaign -->
+
+                    </div> 
+                    <div id="tours" style="margin-top: 10px;">
+                        <button class="attachment-instructions-btn" id="how_to_use">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to use WA Sender?</span>
+                        </button>
+                        <button class="attachment-instructions-btn attachments">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to send attachments?</span>
+                        </button>
+                        <button class="attachment-instructions-btn group">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to send messages to groups?</span>
+                        </button>
+                        <button class="attachment-instructions-btn contact">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to send messages to contacts?</span>
+                        </button>
+                        <button class="attachment-instructions-btn customize">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to send customized messages ?</span>
+                        </button>
+                        <button class="attachment-instructions-btn unsaved">
+                            <span class="attachment-instructions-icon attachment-instructions">i</span>
+                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
+                                data-translate-text>How to export unsaved chat contacts?</span>
+                        </button>
+                    </div>      
+                </div>
+            </div>
+
+            <div style="border: 1px solid #C4C4C4;width: 100%;"></div>
+
+            <div class="links_div">
+                <div class="row">
+                    <!-- <div id="help" class="CtaLiveSupport" style="color: #F40B0B;font-weight: bold;cursor: pointer;border: 1px solid #F40B0B;padding: 4px;box-sizing: border-box;border-radius: 3px; display: flex; justify-content: center; align-items: center; gap: 5px">
+                        <img src="logo/pro-help-1.png" style="width: 15px;height: 15px;padding-right: 2px;"/>
+                        <span id="live_support_text" data-translate-text>Chat Support</span>
+                        <span id="email_support_text" data-translate-text hidden>Email Support</span>
+                    </div> -->
+                    <!-- <div class="language-selector-container">
+                        <img id="translate-icon" src="./logo/pro-language-translate.png" alt="Translate Icon" class="shimmer">
+                        <select name="language-select" id="language-selector" class="shimmer">
+                        </select>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div id="chat_link" class="CtaBtn">
+                        <img src="logo/pro-whatsapp.png"/>
+                        <span data-translate-text>Business Chat Link for your number</span>
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+
+            <div class="footer_div">
+                <!-- <p style="font-size: 13.5px; font-weight: 600; text-align: center; margin: 0px;">
+                    <span data-translate-text>To learn more about the product, visit</span>
+                    <a class="CtaBtn" target="_blank" href="" style="text-decoration: none; color:#009A88;">Pro Sender</a>
+                </p> -->
+                <div class="footer_links">
+                    <!-- <a class="CtaBtn link" href="" target="_blank">Request a feature</a>
+                    <a class="CtaBtn link" href="" target="_blank">FAQs</a>
+                    <a class="CtaBtn link" href="" target="_blank">Blogs</a>
+                    <p class="CtaBtn link" id="unsubscribe">Unsubscribe</p> -->
+                    <p style="font-weight: bold;">version <span id="extension-version"></span></p>
+                </div>
+            </div>
+        <div>
+    </body>
+</html>

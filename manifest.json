@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "name": "WA Sender - Bulk WhatsApp Message Sender",
+  "version": "1.0.7",
+  "default_locale": "en",
+  "description": "__MSG_Description__",
+  "icons": {
+    "16": "logo/pro-small.png",
+    "48": "logo/pro-medium.png",
+    "128": "logo/pro-large.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://web.whatsapp.com/*"
+      ],
+      "js": [
+        "js/library/jquery.js",
+        "js/library/driver.js.iife.js",
+        "js/data.js",
+        "js/ga-code.js",
+        "js/translate.js",
+        "js/driver.js",
+        "js/messenger.js",
+        "js/content.js"
+      ],
+      "css": [
+        "css/driver.css",
+        "css/content.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "/js/inject.js",
+        "/logo/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "WA Sender - Bulk WhatsApp Message Sender"
+  },
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "unlimitedStorage",
+    "notifications",
+    "tabs",
+    "identity",
+    "identity.email"
+  ]
+}
