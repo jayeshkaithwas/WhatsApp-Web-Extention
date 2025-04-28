@@ -1,6 +1,4 @@
-# WA Sender
-
-**WA Sender** is a **completely FREE** Chrome extension that helps you connect with your customers by sending bulk messages via WhatsApp — **for free**.
+This is a **completely FREE** Chrome extension that helps you connect with your customers by sending bulk messages via WhatsApp — **for free**.
 
 ---
 
