@@ -4,7 +4,7 @@
 
 1. Clone the repository:
     ```bash
-    git clonegit@github.com:alphaextensions/pro-sender.git
+    git clone https://github.com/jayeshkaithwas/WhatsApp-Web-Extention.git
     ```
 2. Open Chrome and navigate to `chrome://extensions/`.
 3. Enable "Developer mode" by clicking the toggle switch in the top right corner.
