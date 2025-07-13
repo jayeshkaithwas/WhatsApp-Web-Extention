@@ -7,30 +7,35 @@
         <script src="js/library/jquery.js"></script>
         <script src="js/library/intlTelInput.min.js"></script>
         <script src="js/library/intlTelInput.utils.js"></script>
-        <script src="js/library/driver.js.iife.js"></script>
         <script src="js/library/libphonenumber.min.js"></script>
-        <script src="js/library/papaparse.min.js"></script>
         <script src="js/library/ajax_libs_xlsx_0.14.3_xlsx.full.min.js"></script>
-        <script src="js/data.js"></script>
-        <script src="js/driver.js" ></script>
-        <script src="js/ga-code.js"></script>
+        <script src="js/library/driver.js.iife.js"></script>
+        <script src="js/library/papaparse.min.js"></script>
+
+        <script src="js/Utils/data.js"></script>
+        <script src="js/Utils/ga-code.js"></script>
+        <script src="js/Utils/helper.js"></script>
+        <script src="js/Utils/driver.js"></script>
+        <script src="js/emoji-picker.js"></script>
+
         <script src="js/popup.js"></script>
         
         <link href='https://fonts.googleapis.com/css?family=PT Sans Caption' rel='stylesheet'>
         <link rel="stylesheet" href="css/intlTelInput.css">
         <link rel="stylesheet" href="css/driver.css">
+        <link rel="stylesheet" href="css/emoji-picker.css">
         <link rel="stylesheet" href="css/popup.css">
     </head>
     <body>
         <div class="background_overlay" hidden></div>
         <div class="how_to_use_buttons" hidden>
             <div class="how_to_use_left how_to_use_button CtaBtn" hidden>
-                <img src="logo/pro-arrow-left.png" alt="right_arrow">
+                <img src="logo/prime_arrow-left.png" alt="right_arrow">
                 <span>Prev</span>
             </div>
             <div class="how_to_use_right how_to_use_button CtaBtn" hidden>
                 <span>Next</span>
-                <img src="logo/pro-arrow-right.png" alt="left_arrow">
+                <img src="logo/arrow-right.png" alt="left_arrow">
             </div>
         </div>
 
@@ -39,7 +44,7 @@
             <div class='confirm' style="padding: 10px 12px;">
                 <div class="confirm-overlay content-overlay">
                     <div class="confirm-overlay warning-img-overlay">
-                        <img src="logo/pro-warning.png" alt="">
+                        <img src="logo/warning.png" alt="">
                     </div>
                     <div class='confirm-msg'> 
                     <p data-translate-text>Sending more than three attachments at a time might lead to your number getting <b>banned</b>.<br>Do you want to continue?</p>  
@@ -58,7 +63,7 @@
             <div style="display: flex; justify-content: center;">
                 <div id="select_functionality_container" class="CtaPopupHeader header-tab functionality-tab active">
                     <div id="select_functionality" class="header-tab-content functionality-tab-content">
-                        <img src="logo/pro-logo-img.png" id="ps-logo-left" />
+                        <img src="logo/logo-img.png" style="width: 36px;" class="headerImg" />
                         <div style="padding: 8px;" id="ps-logo-right" class="headerLogoText">WA Sender</div>
                     </div>
                 </div>
@@ -66,11 +71,11 @@
             <div style="display: flex; justify-content: center;">
                 <div id="select_premium_container" class="CtaPopupHeader header-tab premium-tab">
                     <div id="select_premium_features" class="header-tab-content premium-tab-content">
-                        <img id="add_business_img" style="width: 90%;
-                        height: 90%;" src="logo/pro-plus.png" />
-                        <div id="add_business_text" style="color: #009A88; font-size: 14px;">
-                            <span id="non_premium_header_text"></span>
-                            <span id="user_info_text"></span>
+                        <!-- <img id="add_business_img" style="width: 90%;
+                        height: 90%;" src="logo/plus.png" /> -->
+                        <div id="add_business_text" style="color: #C4C4C4 !important; font-size: 20px;">
+                            <span id="non_premium_header_text">Free Trial - Buy Premium</span>
+                            <span id="user_info_text">Features</span>
                         </div>
                     </div>
                 </div>
@@ -83,74 +88,18 @@
                 <div class="paused_container">
                     <p data-translate-text>Your previous campaign was paused.</p>
                     <div class="paused_button_container">
-                        <button class="paused_resume_button CtaBtn"><img src="logo/pro-resume_logo.png" alt="resume_logo">Resume</button>
+                        <button class="paused_resume_button CtaBtn"><img src="logo/resume_logo.png" alt="resume_logo">Resume</button>
                         <button class="paused_stop_button CtaBtn"><span class="circle"></span>Stop</button>
                     </div>
                 </div>
             </div>
             <div id="show_premium_features" style="background: #000;display: none;width: 100%;">
-                <!-- showing user info -->
-                <div class="premium_feature_block premium_featured_number" style="flex-direction: column;">
-                    <div id="premium_enabled_on" style="color: #fff; font-weight: 400; font-size: 14px; line-height: 15.53px;">
-                        <p id="plan_details"></p>
-                        <p id="customer_email"></p>
-                    </div>
-                    <div style="margin: 0px; display: none;position:relative;align-items:flex-start;gap:10px;flex-direction:column;justify-content:center;" id="transfer_premium_button">
-                        <!-- <p id="show_country_selector" style="color: #009a88;margin: 0px; font-weight: 600; font-size: 14px; cursor: pointer;">Transfer premium to another number</p> -->
-                        <div id="premium_country_selector_container" style="position:relative;display:flex;gap:5px;align-items:center;" class="hide">
-                            <span style="font-size:13px;color:#fff;">From <span id="my_current_number" style="color:#009a88;font-weight:bold;"></span> to : </span>
-                            <input type="tel" id="country-code-input-2">
-                            <input type="number" id="premium_number_input" style="border-radius:5px;height:18px;padding:2px 5px;border:none;outline:none;width:110px;">
-                            <div id="request_transfer_btn" style="background:#009a88;padding:5px 10px;font-size:14px;border-radius:8px;font-weight:bold;color:#009a88;color:#fff;cursor:pointer;">Request</div>
-                        </div>
-                    </div>
-                    <p id="transfer_premium_error" style="color: #F40B0B;margin: 0px; font-size: 13px; display: none;">New number cannot be the same as the existing number.</p>
-                    <!-- <div class="premium_feature_block" id="buy_premium_block" style="border:none;"></div> -->
-                </div>
-                <div class="premium_feature_block mult_account_block hide" style="flex-direction: column;"></div>
-                <div class="premium_feature_block what_is_advancepromo_block" style="display: none;">
-                    <div style="display: flex; align-items: start; justify-content: center; flex-direction: column;">
-                        <span class="question" style="color: #009a88; margin: 5px 0px; font-weight: bold; font-size: 14px;">What is AdvancePromo?</span>
-                        <span class="answer"  style="color: #fff;">It's a free trial of Advance Premium provided to certain lucky users</span>
-                    </div>
-                </div>
-                <!-- <div class="premium_feature_block" id="buy_premium_block"></div> -->
-                <!-- showing user info -->
-                <!-- showing percentage utilisation of premium -->
-                <!-- <div class="premium_feature_block">
-                    <div class="premium-pie-section" style="color: #fff;"> -->
-                        <!-- for the circle -->
-                        <!-- <div class="pie-container">
-                            <div id="pie">
-                                <span class="premium-utlisation-precentage">70%</span>
-                            </div>
-                        </div> -->
-                        <!-- for the text -->
-                        <!-- <div id="premium_utilisation_text" style="font-size:14px;">
-                        </div>
-                    </div>
-                </div> -->
-                <!-- showing percentage utilisation of premium -->
-                <!-- invoice feature -->
-                <div class="premium_feature_block invoice_feature_block">
-                    <div class="invoice_upper">
-                        <p style="color:#fff; font-weight:700; font-size:16px">Receipt: </p>
-                        <select name="invoice_month" id="invoice_input" style="height: fit-content; padding:5px">
-                        </select>
-                        <a id="download_invoice_button" class="CtaBtn" href="#">
-                            <img id="invoice_button_loader" src="logo/pro-loader.svg" alt="" style="display: none;">
-                            <span id="invoice_button_text">Download</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- invoice feature  -->
-
                 <div class="premium_features_divider">
                     <p style="z-index: 1000; color: #fff; margin: 0px; margin-left: 16px;">Features :</p>
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-broadcast.png" class="premium_feature_image" />
+                        <img src="logo/broadcast.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Unlimited Broadcast message</div>
@@ -159,7 +108,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-delivery-report.gif" class="premium_feature_image" />
+                        <img src="logo/delivery-report.gif" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Report</div>
@@ -168,7 +117,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-piggy-bank.png" class="premium_feature_image" />
+                        <img src="logo/piggy-bank.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Reduce time delay & Add random delay</div>
@@ -177,7 +126,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img style="scale: 1.6;" src="logo/pro-attachment.gif" class="premium_feature_image" />
+                        <img style="scale: 1.6;" src="logo/attachment.gif" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>File Attachment</div>
@@ -186,7 +135,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-chat (1).png" class="premium_feature_image" />
+                        <img src="logo/chat (1).png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Customise your message</div>
@@ -195,7 +144,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-closed-caption (1).png" class="premium_feature_image" />
+                        <img src="logo/closed-caption (1).png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Add Caption</div>
@@ -204,43 +153,16 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-buisness-chat.png" class="premium_feature_image" style="filter: brightness(0.8);" />
-                    </div>
-                    <div class="premium_feature_text_block">
-                        <div class="premium_feature_title" data-translate-text>WhatsApp Chat Link</div>
-                        <div class="premium_feature_desc" data-translate-text>Generate a link to your WhatsApp number's chat and let customers directly connect with you</div>
-                    </div>
-                </div>
-                <div class="premium_feature_block">
-                    <div class="premium_feature_image_block">
-                        <img src="logo/pro-schedule.png" class="premium_feature_image" />
-                    </div>
-                    <div class="premium_feature_text_block">
-                        <div class="premium_feature_title" data-translate-text>Schedule your messages</div>
-                        <div class="premium_feature_desc" data-translate-text>Schedule your campaign at a future time</div>
-                    </div>
-                </div>
-                <div class="premium_feature_block">
-                    <div class="premium_feature_image_block">
-                        <img src="logo/pro-message.png" class="premium_feature_image" />
+                        <img src="logo/message.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Quick Replies</div>
                         <div class="premium_feature_desc" data-translate-text>Respond to your customers quickly, with pre-saved responses</div>
                     </div>
                 </div>
-                <!-- <div class="premium_feature_block">
-                    <div class="premium_feature_image_block">
-                        <img style="scale: 2;" src="logo/pro-customer-support.gif" class="premium_feature_image" />
-                    </div>
-                    <div class="premium_feature_text_block">
-                        <div class="premium_feature_title" data-translate-text>Active support</div>
-                        <div class="premium_feature_desc" data-translate-text>You can click on 'Chat Support' on the extension to get your queries resolved. We also provide call and video support.</div>
-                    </div>
-                </div> -->
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-paper.png" class="premium_feature_image" />
+                        <img src="logo/paper.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Batching</div>
@@ -249,7 +171,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img style="scale: 1.6;" src="logo/pro-upload-excel.gif" class="premium_feature_image" />
+                        <img style="scale: 1.6;" src="logo/upload-excel.gif" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Upload excel of numbers</div>
@@ -258,7 +180,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-export-contact.png" class="premium_feature_image" />
+                        <img src="logo/export-contact.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Group Export</div>
@@ -267,7 +189,7 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-message-formatting.png" class="premium_feature_image" />
+                        <img src="logo/message-formatting.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Message Formatting</div>
@@ -276,25 +198,25 @@
                 </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-stop.png" class="premium_feature_image" style="filter: brightness(0.9);" />
+                        <img src="logo/stop.png" class="premium_feature_image" style="filter: brightness(0.9);" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Stop Campaign</div>
                         <div class="premium_feature_desc" data-translate-text>Ability to stop messaging mid-campaign</div>
                     </div>
                 </div>
-                <!-- <div class="premium_feature_block">
+                <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-excel-2.png" class="premium_feature_image" />
+                        <img src="logo/prime_excel_icon.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Real-Time Excel Preview</div>
                         <div class="premium_feature_desc" data-translate-text>Get a real-time preview of uploaded CSV of numbers</div>
                     </div>
-                </div> -->
+                </div>
                 <div class="premium_feature_block">
                     <div class="premium_feature_image_block">
-                        <img src="logo/pro-save-templates.png" class="premium_feature_image" />
+                        <img src="logo/save-templates.png" class="premium_feature_image" />
                     </div>
                     <div class="premium_feature_text_block">
                         <div class="premium_feature_title" data-translate-text>Save Templates</div>
@@ -308,16 +230,6 @@
                 </div>
                 <div class="premium_feature_faq"></div>
                 <!--faqs section-->
-
-                <div class="premium_feature_block" id="premium_support_block">
-                    <!-- <div class="premium_feature_desc CtaBtn" id="request_chat_premium" style="cursor: pointer;margin-bottom: 8px;font-size: 14px;display: flex;"><img src="logo/pro-chat-white.png"  style="width: 24px;margin-right: 16px;" /><div style="margin-top: 3px;" data-translate-text>Request for chat support</div></div>
-                    <div class="premium_feature_desc CtaBtn" id="request_zoom_premium" style="cursor: pointer;margin-bottom: 8px;font-size: 14px;display: flex;"><img src="logo/pro-video-call.png"  style="width: 24px;margin-right: 16px;"/><div style="margin-top: 3px;" data-translate-text>Request for a zoom/meet call support</div></div>
-                    <div class="premium_feature_desc CtaBtn" id="request_call_premium" style="cursor: pointer;font-size: 14px;display: flex;"><img src="logo/pro-phone-call.png"  style="width: 24px;margin-right: 16px;"/><div style="margin-top: 3px;" data-translate-text>Request for a call support</div></div> -->
-                </div>
-                <!-- <div class="premium_feature_block" id="buy_premium_block" style="text-align: center;"> -->
-                <!--     <div id="buy_premium_popup" class="premium_button CtaBtn">Buy Premium</div> -->
-                <!--     <div class="premium_feature_desc" style="margin-top: 8px;text-align: center;" data-translate-text>Payments are implemented using secure gateway like Stripe, Razorpay</div> -->
-                <!-- </div> -->
             </div>
         </div>
 
@@ -357,11 +269,11 @@
                 <div class="help_type">
                     <div class="attachment_popup_content">
                         <div style="font-size: 12px; margin:5px 3px; display: flex;">
-                            <img src="logo/pro-sound-bell.png" style="width: 14px;height: 14px;margin-right: 4px;" />
+                            <img src="logo/sound-bell.png" style="width: 14px;height: 14px;margin-right: 4px;" />
                             <span data-translate-text>Read the following instructions before sending the attachment</span>
                         </div>
                         <div class="instructions">
-                            <p>1. Click on the icon of <strong><img src="/logo/pro_attach_symbol.png" alt="icon"> Attachment</strong> inside the text box inside the extension</p>
+                            <p>1. Click on the icon of <strong><img src="/logo/prime_attach_symbol.png" alt="icon"> Attachment</strong> inside the text box inside the extension</p>
                             <p>2. Select files you'd like to send. You can select multiple</p>
                             <p>3. You can click on <strong>Add Caption</strong> to add caption to your attachment</p>
                             <p>4. Click on <strong>Send</strong> button inside the extension</p>
@@ -392,31 +304,62 @@
                             <div class="radio_btns">
                                 <div class="radio_btn">
                                     <input type="radio" id="message_type_numbers" name="message_type" checked value="numbers">
-                                    <span><label for="message_type_numbers" style="cursor:pointer;">Numbers</label></span>
+                                    <span><label for="message_type_numbers" style="cursor:pointer; display: flex; align-items: center;">
+                                        <img src="logo/prime_pin.png" class="icon-default" style="width: 16px; height: 16px; margin-right: 5px;">
+                                        <span data-translate-text>Numbers</span>
+                                    </label></span>
                                 </div>
                                 <div class="radio_btn group_id">
                                     <input type="radio" id="message_type_groups" name="message_type" value="groups">
-                                    <span><label for="message_type_groups" style="cursor:pointer;">Groups</label></span>
+                                    <span><label for="message_type_groups" style="cursor:pointer; display: flex; align-items: center;">
+                                        <img src="logo/prime_multiple-users-silhouette.png" class="icon-default" style="width: 16px; height: 16px; margin-right: 5px;">
+                                        <span data-translate-text >Groups</span>
+                                    </label></span>
                                 </div>
                                 <div class="radio_btn contact_id">
                                     <input type="radio" id="message_type_contact" name="message_type" value="contacts">
-                                    <span><label for="message_type_contact" style="cursor:pointer;">Contacts</label></span>
+                                    <span><label for="message_type_contact" style="cursor:pointer; display: flex; align-items: center;">
+                                        <img src="logo/prime_notebook-of-contacts.png" class="icon-default" style="width: 16px; height: 16px; margin-right: 5px;">
+                                        <span data-translate-text>Contacts</span>
+                                    </label></span>
+                                </div>
+                                <div class="radio_btn label_id">
+                                    <input type="radio" id="message_type_label" name="message_type" value="labels">
+                                    <span><label for="message_type_label" style="cursor:pointer; display: flex; align-items: center;">
+                                        <img src="logo/prime_price-tag.png" class="icon-default" style="width: 16px; height: 16px; margin-right: 5px;">
+                                        <span data-translate-text>Labels</span>
+                                    </label></span>
+                                </div>
+                                <div class="radio_btn favourite_id">
+                                    <input type="radio" id="message_type_list" name="message_type" value="lists">
+                                    <span><label for="message_type_list" style="cursor:pointer; display: flex; align-items: center;">
+                                        <img src="logo/prime_favourite.png" class="icon-default" style="width: 16px; height: 16px; margin-right: 5px;">
+                                        <span data-translate-text>Favourites</span>
+                                    </label></span>
                                 </div>
                             </div>
                         </div>
                         <div class="groups_box" style="flex-direction:column;">
-                            <img id="delete-all" src="./logo/pro-delete-icon.png" title="Delete All" class="tool-icon">
+                            <img id="delete-all" src="./logo/delete-icon.png" title="Delete All" class="tool-icon">
+                            <img id="campaign-save-icon-items" src="./logo/floppy-disk.png" title="Save groups" class="tool-icon" style="filter:contrast(1);">
                             <p class="text_title radio-item" style="margin: 0px" id="box_label">Select groups to message</p>
                             <div class="groups_display_box custom-scrollbar">
                                 <p style="color:gray;font-size:13px;margin:0px;">Select groups from the dropdown . . .</p>
                             </div>
+                            <div id="campaign-box-groups" class="campaign-box campaign-box-groups dropdown-box">
+                                <div id="campaign_selector_groups" class="campaign-selector dropdown CtaBtn">
+                                    <p class="text selector-box-name">Campaign Groups</p>
+                                    <img src="./logo/down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
+                                </div>
+                                <div id="campaigns-container-groups" class="campaigns-container dropdown-container dropdown-container-groups custom-scrollbar hide">
+                                </div>
+                            </div>
                             <div id="group_selector_box" class="group_selector_box dropdown-box">
                                 <div class="groups_searchbar">
-                                    <img src="logo/pro-search-icon.svg" alt="" style="width:20px;margin-bottom:5px"/>
+                                    <img src="logo/search-icon.svg" alt="" style="width:20px;margin-bottom:5px"/>
                                     <input type="text" placeholder="Search group by name" data-translate-placeholder class="search_group_input"/>
                                     <div class="select_all">
                                         <input type="checkbox" name="select_all" title="Select all" id="select-all">
-                                        <span id="select_all_text">Select All</span>
                                     </div>
                                 </div>
                                 <div id="groups_container" class="dropdown-container custom-scrollbar hide">
@@ -436,20 +379,15 @@
                             <div id="numbers-display" class="custom-scrollbar"></div>
                             
                             <div id="input-container">
-                                <img id="delete-all-numbers" src="./logo/pro-delete-icon.png" title="Delete All Numbers" class="tool-icon" style="display: none;">
+                                <img id="delete-all-numbers" src="./logo/delete-icon.png" title="Delete All Numbers" class="tool-icon" style="display: none;">
                                 <textarea type="text" id="numbers" hidden></textarea>
                                 <textarea type="text" id="numbers-input" placeholder="Enter numbers separated by comma or one below the other. Eg. +91 8123456789, +1 2015550123"></textarea>
                             </div>
 
-                            <a href="https://docs.google.com/spreadsheets/d/1Ews1J9VP4j-uoE1wmwKPsaHNEPPV8tjiXeSLk5rHtcM/edit?usp=sharing" target="_blank" id="download_template" class="CtaBtn" style="color: #009A88; cursor: pointer;margin: 7px;display: flex; justify-content: center; align-items: center; text-decoration: none; position: absolute; bottom: 0; left: 0;border-bottom: 1px solid #009a88; padding-bottom: 3px;">
-                                <img src="logo/pro-excel_svg.svg" style="filter: contrast(0.5); width: 14px;padding-right: 4px;" />
+                            <a href="https://docs.google.com/spreadsheets/d/1T1qALFu6cMbgrlcrlO-UuIvOLeN_-I4m4o2NzLDuyIk/edit?gid=0#gid=0" tabindex="-1" target="_blank" id="download_template" class="CtaBtn" style="color: #259C46; cursor: pointer;margin: 7px;display: flex; justify-content: center; align-items: center; text-decoration: none; position: absolute; bottom: 0; left: 0;border-bottom: 1px solid #259C46; padding-bottom: 3px;">
+                                <img src="logo/prime_excel_icon.png" style="filter: contrast(0.5); width: 14px;padding-right: 4px;" />
                                 <span data-translate-text>Example</span>
                             </a>
-    
-                            <!-- <div id="invalid-numbers" class="invalid-numbers CtaBtn">
-                                <span id="invalid-count" class="invalid-count"></span>
-                                <span>Invalid Format</span>             
-                            </div> -->
     
                             <div class="tools-container">
                                 <div id="invalid-numbers" class="invalid-numbers CtaBtn">
@@ -457,21 +395,54 @@
                                     <span>Invalid Format</span>             
                                 </div>
                                 <span id="uploaded-csv" hidden="true"></span>
-                                <label class="CtaBtn upload_excel_box" style="color: #009A88;text-decoration: none; margin: 0px 10px;cursor: pointer;display: inline-flex;">
-                                    <img src="logo/pro-upload_excel.png" style="width: 18px;padding-right: 4px;  filter: contrast(0.5);" />
-                                    <span class="upload_excel_text" style="border-bottom: 1px solid #009a88; padding-bottom: 2px; display: flex; justify-content: center; align-items: center; gap: 2px;">
-                                        <span data-translate-text>Upload Excel</span>
-                                        <img src="logo/pro-excel_svg.svg" style="height: 12px;">
-                                    </span>
-                                    <input type="file" id="csv" value="Upload" accept=".xls,.xlsx,.ods,.csv" style="display: none;" />
-                                </label>
+                                 <div class="import-excel-dropdown">
+                                    <div class="CtaBtn import_excel_box">
+                                        <img src="logo/upload.png" class="excel-icon" />
+                                        <span class="import_excel_text" id="import_excel_text">
+                                            <span data-translate-text>Import Excel</span>
+                                            <img src="logo/excel_svg.svg" class="excel-svg-icon">
+                                        </span>
+                                    </div>
+                                    <div class="import-excel-dropdown-content">
+                                        <div class="dropdown-item" id="import-from-device">
+                                            <table cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td class="icon-cell"><img src="logo/import-from-device.png" class="dropdown-item-icon" /></td>
+                                                    <td><span data-translate-text>Import from device</span></td>
+                                                </tr>
+                                            </table>
+                                            <input type="file" id="csv" value="Upload" accept=".xls,.xlsx,.ods,.csv" style="display: none;" />
+                                        </div>
+                                        <div class="dropdown-item google_sheets_box">
+                                            <table cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td class="icon-cell"><img src="logo/import-from-google-sheets.png" class="dropdown-item-icon" /></td>
+                                                    <td><span data-translate-text>Import from Google Sheets</span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="google-sheets-container" class="sheets-input-container" style="display: none;">
+                                    <h3 style="margin-top: 5px; margin-bottom: 5px; color: #269c47; font-size: 16px;">Import from Sheets</h3>
+                                    <div class="sheets-input-box">
+                                        <input type="text" id="google-sheets-url" placeholder="Paste Google Sheets URL" />
+                                        <button id="fetch-google-sheets" class="btn btn-primary">
+                                            <span data-translate-text>Fetch</span>
+                                        </button>
+                                    </div>
+                                    <div class="sheets-help-text">
+                                        <span data-translate-text>Make sure the sheet is shared with "Anyone with the link"</span>
+                                    </div>
+
+                                </div>
     
                                 <div id="campaign-box" class="campaign-box dropdown-box">
                                     <div id="campaign-selector" class="campaign-selector dropdown CtaBtn">
                                         <p class="text">Campaign Numbers</p>
-                                        <img src="./logo/pro-down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
+                                        <img src="./logo/down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
                                     </div>
-                                    <img id="campaign-save-icon" src="./logo/pro-template-save.png" class="tool-icon hide" title="Save Numbers">
+                                    <img id="campaign-save-icon" src="./logo/prime_template-save.png" class="tool-icon hide">
                                     <div id="campaigns-container" class="campaigns-container dropdown-container custom-scrollbar hide">
                                     </div>
                                 </div>
@@ -488,20 +459,66 @@
                             <div class="popup_overlay"></div>
                             <div class="campaign-save-popup main-popup">
                                 <div class="popup-header">
-                                    <h3 class="title" style="font-family: 'PT Sans Caption'">Save Campaign Numbers</h3>
-                                    <span class="campaign-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                    <h3 class="title campaign-title" style="font-family: 'PT Sans Caption'">Save Campaign Numbers</h3>
+                                    <span class="campaign-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/closeBtn.png" alt=""></span>
                                 </div>
                                 <form id="save-campaign-form">
                                     <input type="hidden" id="edit-index" value="">
-                                    <textarea style="font-family: 'PT Sans Caption'" id="campaign-numbers" rows="5" cols="20"
+                                    <textarea style="font-family: 'PT Sans Caption'" placeholder="Enter numbers separated by comma or one below the other. Eg. +918123456789, +12015550123" id="campaign-numbers" rows="5" cols="20"
                                         title="Campaign Numbers" required></textarea>
                                     <div class="save-as">
                                         <p class="text" style="font-family: 'PT Sans Caption'">Save as</p>
                                         <input style="font-family: 'PT Sans Caption'" type="text" id="campaign-name" placeholder="Campaign Name"
                                             title="Campaign Name" maxlength="15" required data-translate-placeholder>
                                     </div>
-                                    <button class="btn CtaBtn" style="font-family: 'PT Sans Caption'" type="submit">Save Campaign Numbers</button>
+                                    <button class="btn CtaBtn campaign-btn" style="font-family: 'PT Sans Caption'" type="submit">Save Numbers</button>
                                 </form>
+                                <div class="import-excel-dropdown" data-suffix="campaign">
+                                    <div class="CtaBtn import_excel_box" data-suffix="campaign">
+                                        <img src="logo/upload.png" class="excel-icon" />
+                                        <span class="import_excel_text" id="import_excel_text-campaign">
+                                            <span data-translate-text>Import Excel</span>
+                                            <img src="logo/excel_svg.svg" class="excel-svg-icon">
+                                        </span>
+                                    </div>
+                                    <div class="import-excel-dropdown-content" data-suffix="campaign">
+                                        <div class="dropdown-item" id="import-from-device-campaign">
+                                            <table cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td class="icon-cell">
+                                                        <img src="logo/import-from-device.png" class="dropdown-item-icon" />
+                                                    </td>
+                                                    <td><span data-translate-text>Import from device</span></td>
+                                                </tr>
+                                            </table>
+                                            <input type="file" id="csv-campaign" value="Upload" accept=".xls,.xlsx,.ods,.csv" style="display: none;" />
+                                        </div>
+                                        <div class="dropdown-item google_sheets_box" data-suffix="campaign">
+                                            <table cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td class="icon-cell">
+                                                        <img src="logo/import-from-google-sheets.png" class="dropdown-item-icon" />
+                                                    </td>
+                                                    <td><span data-translate-text>Import from Google Sheets</span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="google-sheets-container-campaign" class="sheets-input-container" style="display: none;">
+                                    <h3 style="margin-top: 5px; margin-bottom: 5px; color: #00c451; font-size: 16px;">
+                                        Import from Sheets
+                                    </h3>
+                                    <div class="sheets-input-box">
+                                        <input type="text" id="google-sheets-url-campaign" placeholder="Paste Google Sheets URL" />
+                                        <button id="fetch-google-sheets-campaign" class="btn btn-primary">
+                                            <span data-translate-text>Fetch</span>
+                                        </button>
+                                    </div>
+                                    <div class="sheets-help-text">
+                                        <span data-translate-text>Make sure the sheet is shared with "Anyone with the link"</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>    
                           
@@ -510,10 +527,10 @@
                             <div class="invalid-excel-popup-content">
                                 <div class="popup-header">
                                     <div class="title-div">
-                                        <img src="./logo/pro-error.png" alt="Oops!">
+                                        <img src="./logo/error.png" alt="Oops!">
                                         <h3 class="title" style="font-family: 'PT Sans Caption'">Alert : Invalid Excel format detected</h3>
                                     </div>
-                                    <span class="invalid-excel-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                    <span class="invalid-excel-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/closeBtn.png" alt=""></span>
                                 </div>
                                 <div class="invalid-excel-popup-body">
                                     <div class="invalid-excel-popup-description">
@@ -522,7 +539,7 @@
                                     </div>
                                     <div class="invalid-excel-popup-buttons">
                                         <button class="template-excel-button CtaBtn">
-                                            <a href="https://docs.google.com/spreadsheets/d/1Ews1J9VP4j-uoE1wmwKPsaHNEPPV8tjiXeSLk5rHtcM/edit?usp=sharing" target="_blank" >Template Excel</a>
+                                            <a href="https://docs.google.com/spreadsheets/d/1T1qALFu6cMbgrlcrlO-UuIvOLeN_-I4m4o2NzLDuyIk/edit?gid=0#gid=0" target="_blank" >Template Excel</a>
                                         </button>
                                         <button class="upload-anyway-button CtaBtn" id="upload-anyway-button">
                                             Upload anyway
@@ -540,7 +557,7 @@
                                         <span id="popup-invalid-count" class="invalid-count"></span>
                                         Invalid Format
                                     </h3>
-                                    <span class="invalid-numbers-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                    <span class="invalid-numbers-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/closeBtn.png" alt=""></span>
                                 </div>
                                 <div class="popup-content">
                                     <span>Common Reasons for invalid numbers:</span>
@@ -570,7 +587,8 @@
                             <span style="font-weight: bold;margin-right: 12px;">*text*</span>
                             <span style="font-style: italic;margin-right: 12px;">_text_</span>
                             <span style="text-decoration: line-through;margin-right: 12px;">~text~</span>
-                            <a href="https://getemoji.com/" target="_blank" style="color: #707274;">EMOJIS</a>
+                            <span style="font-family: 'Courier New', Courier, monospace; background-color: #f3f3f3; padding: 2px 4px; border-radius: 4px; margin-right: 14px; cursor: pointer;"">`text`</span>
+                            <a href="https://getemoji.com/" tabindex="-1" target="_blank" style="color: #707274;">EMOJIS</a>
                         </span>
                     </div>
     
@@ -587,6 +605,12 @@
                         <div class="tools-container">
                             <div id="attachments-container">
                             </div>
+
+                            <div class="emoji_box">
+                                <div class="emoji_symbol tooltip-trigger">
+                                    <img src="/logo/emoji-icon2.png" alt="Add Emoji" id="add-emoji" class="tool-icon">
+                                </div>
+                            </div>
                             
                             <div class="attachment_box">
                                 <div class="navigation_outer_box_up navigation_container" style="bottom:-50px;left:0px;" hidden>
@@ -598,7 +622,7 @@
 
                                 <div class="attach_symbol tooltip-trigger">
                                     <input type="file" id="select-attachments" multiple hidden>
-                                    <img src="/logo/pro_attach_symbol.png" alt="Add Attachment" id="add-attachments" class="tool-icon shimmer">
+                                    <img src="/logo/prime_attach_symbol.png" alt="Add Attachment" id="add-attachments" class="tool-icon shimmer">
                                     <div class="add-tooltip-overlay hide"></div>
             
                                     <div class="tooltip-popup-container hide">
@@ -608,19 +632,18 @@
                                                     Did you know?
                                                 </div>
                                                 <div class="tooltip-popup-image">
-                                                    <img src="logo/pro-tooltip_popup_image.png" alt="tooltip-popup-image">
+                                                    <img src="logo/tooltip_popup_image.png" alt="tooltip-popup-image">
                                                 </div>
                                                 <div class="close-tooltip">
-                                                    <img  src="./logo/pro-closeBtn.png" alt="x">
+                                                    <img  src="./logo/closeBtn.png" alt="x">
                                                 </div>
                                             </div>
                                             <div class="tooltip-popup-description" data-translate-text>
                                                 You can now select and send multiple attachments to the same number
                                             </div>
-                                            <button class="attachment-instructions-btn attachments">
+                                            <button class="attachment-instructions-btn">
                                                 <span class="attachment-instructions-icon attachment-instructions">i</span>
-                                                <span class="attachment-instructions-text attachment-instructions CtaBtn"
-                                                    data-translate-text>How to send attachments?</span>
+                                                <span class="attachment-instructions-text attachment-instructions CtaBtn" data-translate-text>How to send attachments?</span>
                                             </button>
                                         </div>
                                     </div>
@@ -630,10 +653,10 @@
                             <div id="template-box" class="template-box dropdown-box">
                                 <div id="template-selector" class="template-selector dropdown CtaBtn">
                                     <p class="text">Template</p>
-                                    <img src="./logo/pro-down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
+                                    <img src="./logo/down-arrow.png" alt="down-arrow icon" class="tool-normal-icon">
                                 </div>
     
-                                <img id="template-save-icon" src="./logo/pro-template-save.png" class="tool-icon hide">
+                                <img id="template-save-icon" src="./logo/prime_template-save.png" class="tool-icon hide">
                                 <div id="templates-container" class="templates-container dropdown-container custom-scrollbar hide">
                                 </div>
                             </div>
@@ -646,21 +669,18 @@
                             </button>
                         </div>  -->
                     </div>
+
                     <div class="customize_container">
                         <div class="customize_section">
-                            <div class="customize_heading">Customizations:</div>
                         </div>
-                        <!-- <a href="" target="_blank" class="customization-instructions-btn" style="position:absolute;bottom:-30px;right:0px;">
-                            <span class="caption-instructions-icon">i</span>
-                            <span class="caption-instructions-text CtaBtn" data-translate-text>How to use customization?</span>
-                        </a> -->
-                    </div>       
+                    </div>
+                    
                     <div class="template-save-popup-container main-popup-container hide" style="font-family: 'PT Sans Caption'">
                         <div class="popup_overlay"></div>
                         <div class="template-save-popup main-popup">
                             <div class="popup-header">
                                 <h3 class="title" style="font-family: 'PT Sans Caption'">Add Template</h3>
-                                <span class="template-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/pro-closeBtn.png" alt=""></span>
+                                <span class="template-popup-close-button main-popup-close-button"><img style="width: 100%;" src="./logo/closeBtn.png" alt=""></span>
                             </div>
                             <form id="save-template-form">
                                 <input type="hidden" id="edit-template-index" value="">
@@ -676,15 +696,23 @@
                         </div>
                     </div>
     
-                    <div id="add-caption-container" style="margin-bottom: 8px;margin-left: 3px; margin-top: 15px;" hidden= "true">
-                        <div class="checkbox-section" style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <div class="action_checkboxes_div">
+                        <div id="add-caption-checkbox-section" class="checkbox-section" hidden>
                             <input type="checkbox" name="checkbox" id="caption-checkbox" style="cursor: pointer;">
-                            <label for="checkbox" style="color: #000; font-weight: bold; font-size: 12px;" data-translate-text="">Add Caption</label>
+                            <label for="caption-checkbox" data-translate-text>Add Caption</label>
                             <div class="add-tooltip-overlay hide"></div>
-                            <div class="caption_customization_input_div hide" style="display: flex; justify-content: center; align-items: center;">
-                                <input type="checkbox" name="add_caption_customization" id="caption_customization" style="cursor:pointer; margin-left: 20px;">
-                                <label for="add_caption_customization" style="color: #000; font-weight: bold; font-size: 12px;" data-translate-text="">Add customization to caption</label>
-                            </div>
+                        </div>
+                    
+                        <div id="attachment-first-checkbox-section"  class="checkbox-section" hidden>
+                            <input type="checkbox" name="checkbox" id="attachment-first-checkbox" style="cursor: pointer;">
+                            <label for="attachment-first-checkbox" data-translate-text>Send attachment first</label>
+                        </div>
+                    </div>
+
+                    <div id="add-caption-container" hidden>
+                        <div class="caption_customization_input_div hide" style="display: flex; justify-content: center; align-items: center;">
+                            <input type="checkbox" name="add_caption_customization" id="caption_customization" style="cursor:pointer; margin-left: 20px;">
+                            <label for="add_caption_customization" style="color: #000; font-weight: bold; font-size: 12px;" data-translate-text="">Add customization to caption</label>
                         </div>
                         <div id="caption-section" hidden="true">
                             <div style="display: flex; flex-direction: column; align-items: flex-end">
@@ -706,10 +734,10 @@
                                         Did you know?
                                     </div>
                                     <div class="tooltip-popup-image">
-                                        <img src="logo/pro-cc.png" alt="tooltip-popup-image">
+                                        <img src="logo/cc.png" alt="tooltip-popup-image">
                                     </div>
                                     <div class="close-tooltip">
-                                        <img  src="./logo/pro-closeBtn.png" alt="x">
+                                        <img  src="./logo/closeBtn.png" alt="x">
                                     </div>
                                 </div>
                                 <div class="tooltip-popup-description" data-translate-text>
@@ -720,8 +748,8 @@
                     </div>
 
                     
-                    <div class="action_buttons_div" style="background-color: transparent; position: relative; box-shadow: none;">
-                        <div class="navigation_outer_box_down navigation_container" style="left:10px;top:-22px;" hidden>
+                    <div class="action_buttons_div">
+                        <div class="navigation_outer_box_down navigation_container" style="left:10px;top:-50px;" hidden>
                             <div class="msg-box-down">
                                 <p data-translate-text>Click to send messages</p>
                                 <div class="arrow" style="left: 10px;"></div>
@@ -731,23 +759,27 @@
                         <div class="text_body" style="position: absolute; top: 0px; margin: 0px; padding: 0px;color: red;display: none;" id="error_message"></div>
                         
                         <button hidden class="CtaBtn" id="schedule" style="border: 0px;width: 120px;height: 32px;background-color: #2758D4;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;"> Schedule</button>
-                        <button class="CtaBtn" id="sender" style="border: 0px;width: 120px;height: 32px;background-color: #009A88;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;"> Send</button>
+                        <button class="CtaBtn" id="sender" style="border: 0px;width: 120px;height: 32px;background-color: #259C46;border-radius: 4px;color: white;cursor: pointer;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);font-family: PT Sans Caption;font-weight: 700;"> Send</button>
                         
                         <div id="report-box" class="report-box dropdown-box">
                             <button id="report-selector" class="CtaBtn btn report-selector dropdown">
                                 Delivery Report
-                                <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
+                                <img src="./logo/prime_dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
                             </button>
                             <div id="reports-container" class="dropdown-container custom-scrollbar hide"></div>
                         </div>
                     </div>
-
                 </div>
 
                 <div id="right_section">
                     <div class="advance_options_container">
                         <p class="advance_option_text" data-translate-text>More Options</p>
 
+                        <!-- Customisation -->
+                        <!-- <div class="advance_option_div advance_option_row">
+                            <input type="checkbox" id="customization" name="customization" value="customization">
+                            <label data-translate-text>Add customisation from excel</label>
+                        </div> -->
 
                         <!-- Time Gap -->
                         <div id="time_gap" class="advance_option_div">
@@ -764,7 +796,7 @@
                                 </div>
                                 <div style="display: flex; align-items: center;">
                                     <input type="radio" id="random" name="time_gap" value="random" style="margin: 0px 5px;">
-                                    <label for="random" id="random_label_text" class="text_color_gray">Random <span style="color: #F16539;" class="text_color_gray">(Recommended)</span></label>
+                                    <label for="random" id="random_label_text" class="text_color_gray">Random <span style="color: #F16539;">(Recommended)</span></label>
                                 </div>
                             </div>
                         </div>
@@ -799,85 +831,34 @@
                             </div>
                         </div>
                         
-                        <!-- Schedule -->
-                        <div id="schedule" class="advance_option_div">
-                            <div id="schedule_div" class="advance_option_row" style="display: flex; flex-wrap: wrap;">
-                                <input type="checkbox" name="" id="schedule_checkbox">
-                                <label data-translate-text>Schedule your campaign</label>
-                                <div id="schedule_day_div" class="col_span" style="margin: 3px 0 0 0;display: none; align-items: center; width: 100%;">
-                                    <label for="schedule_day" style="white-space: nowrap; font-weight: bold;">Schedule date: </label>
-                                    <input type="date"  id="schedule_day" name="schedule_day" class="col_span" style="margin: 0 0 0 5px; height: 20px;">
-                                </div>
-                                <div id="schedule_time_div" class="col_span" style="margin: 3px 0 0 0;display: none; align-items: center; width: 100%;">
-                                    <label for="schedule_time" style="white-space: nowrap; font-weight: bold;">Schedule time: </label>
-                                    <input type="time" id="schedule_time" name="schedule_time" class="col_span" style="margin: 0 0 0 5px;">
-                                </div>
-                            </div> 
-                            <div id="scheduled_campaigns">
-                                <div id="schedule-box" class="schedule-box dropdown-box">
-                                    <button id="schedule_selector" class="CtaBtn btn schedule_selector dropdown">
-                                        View upcoming campaigns
-                                        <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
-                                    </button>
-                                    <div id="schedule_container" class="dropdown-container custom-scrollbar hide"></div>
-                                </div>
-                            </div>
-                            <div id="schedule_campaign_error" style="color: red;font-weight:normal;font-size:10px;margin:10px 0px 0px 25px;" hidden>
-                            <span data-translate-text>Schedule your next campaign after</span><br>
-                                <span style="font-weight:bold;" id="schedule_campaign_error_time"></span><span data-translate-text>to avoid overlapping</span>
-                                <span data-translate-text>of campaigns</span>
-                        </div>
-                            <div id="schedule_campaign_error2" data-translate-text style="color: red;font-weight:normal;font-size:10px;margin:10px 0px 0px 25px;" hidden>You can schedule maximum 3 campaigns at a time</div>
-                            <div style="font-weight: normal;font-size: 10px;line-height: 12px;color: #000; padding: 10px 0px 0px 25px;" id="schedule_message_div" hidden> 
-                                <span style="display: block; width: 200px;" data-translate-text>Please do not run any normal campaign before the scheduled time.</span>
-                                <div id="learn_schedule" style="color: #009A88;text-decoration: unset; cursor: pointer;" data-translate-text>Learn More</div>
-                            </div>
-                        </div>
-                        <!-- paused campaign -->
-                        <div id="paused_campaigns" class="advance_option_div">
-                            <div id="paused-campaign-box" class="paused-campaign-box dropdown-box">
-                                <button id="paused_campaign_selector" class="CtaBtn btn dropdown">
-                                    Resume paused campaigns
-                                    <img src="./logo/pro-dropdown_icon.png" alt="Dropdown icon" style="width:14px; margin: 0px -2px 1px 2px;">
-                                </button>
-                                <div id="paused_campaign_container" class="dropdown-container custom-scrollbar hide"></div>
-                            </div>
-                        </div>
-                        <!-- paused campaign -->
-
                     </div> 
                     <div id="tours" style="margin-top: 10px;">
-                        <button class="attachment-instructions-btn" id="how_to_use">
+                        <button class="attachment-instructions-btn use" id="how_to_use">
                             <span class="attachment-instructions-icon attachment-instructions">i</span>
                             <span class="attachment-instructions-text attachment-instructions CtaBtn"
                                 data-translate-text>How to use WA Sender?</span>
                         </button>
-                        <button class="attachment-instructions-btn attachments">
+                        <button class="attachment-instructions-btn attachments" id="how_to_send_attachments">
                             <span class="attachment-instructions-icon attachment-instructions">i</span>
                             <span class="attachment-instructions-text attachment-instructions CtaBtn"
                                 data-translate-text>How to send attachments?</span>
                         </button>
-                        <button class="attachment-instructions-btn group">
+                        <button class="attachment-instructions-btn group" id="how_to_send_messages_to_groups">
                             <span class="attachment-instructions-icon attachment-instructions">i</span>
                             <span class="attachment-instructions-text attachment-instructions CtaBtn"
                                 data-translate-text>How to send messages to groups?</span>
                         </button>
-                        <button class="attachment-instructions-btn contact">
+                        <button class="attachment-instructions-btn contact" id="how_to_send_messages_to_contacts">
                             <span class="attachment-instructions-icon attachment-instructions">i</span>
                             <span class="attachment-instructions-text attachment-instructions CtaBtn"
                                 data-translate-text>How to send messages to contacts?</span>
                         </button>
-                        <button class="attachment-instructions-btn customize">
+                        <button class="attachment-instructions-btn customize" id="how_to_send_customized_messages">
                             <span class="attachment-instructions-icon attachment-instructions">i</span>
                             <span class="attachment-instructions-text attachment-instructions CtaBtn"
                                 data-translate-text>How to send customized messages ?</span>
                         </button>
-                        <button class="attachment-instructions-btn unsaved">
-                            <span class="attachment-instructions-icon attachment-instructions">i</span>
-                            <span class="attachment-instructions-text attachment-instructions CtaBtn"
-                                data-translate-text>How to export unsaved chat contacts?</span>
-                        </button>
-                    </div>      
+                    </div>           
                 </div>
             </div>
 
@@ -885,38 +866,28 @@
 
             <div class="links_div">
                 <div class="row">
-                    <!-- <div id="help" class="CtaLiveSupport" style="color: #F40B0B;font-weight: bold;cursor: pointer;border: 1px solid #F40B0B;padding: 4px;box-sizing: border-box;border-radius: 3px; display: flex; justify-content: center; align-items: center; gap: 5px">
-                        <img src="logo/pro-help-1.png" style="width: 15px;height: 15px;padding-right: 2px;"/>
-                        <span id="live_support_text" data-translate-text>Chat Support</span>
-                        <span id="email_support_text" data-translate-text hidden>Email Support</span>
-                    </div> -->
-                    <!-- <div class="language-selector-container">
-                        <img id="translate-icon" src="./logo/pro-language-translate.png" alt="Translate Icon" class="shimmer">
+                    <div class="language-selector-container">
+                        <img id="translate-icon" src="./logo/prime_language-translate.png" alt="Translate Icon" class="shimmer">
                         <select name="language-select" id="language-selector" class="shimmer">
                         </select>
-                    </div> -->
-                </div>
-                <div class="row">
-                    <div id="chat_link" class="CtaBtn">
-                        <img src="logo/pro-whatsapp.png"/>
-                        <span data-translate-text>Business Chat Link for your number</span>
                     </div>
-                    
+                    <!-- <div id="how_to_use" class="CtaBtn" style="color: #259C46; font-weight: bold; cursor: pointer; padding: 4px; margin-top: -4px;">
+                        <button style="border: 1px solid #259C46; color: #259C46; cursor: pointer; padding: 0px 4px; margin-left: 4px; border-radius: 50%; background: white; font-size: 11px; margin-right: 1px;">?</button>
+                        <span style="font-size: 12px;" data-translate-text>How to Use Pro Sender</span>
+                    </div> -->
                 </div>
             </div>
             </div>
 
             <div class="footer_div">
-                <!-- <p style="font-size: 13.5px; font-weight: 600; text-align: center; margin: 0px;">
-                    <span data-translate-text>To learn more about the product, visit</span>
-                    <a class="CtaBtn" target="_blank" href="" style="text-decoration: none; color:#009A88;">Pro Sender</a>
-                </p> -->
+                <p style="font-size: 13.5px; font-weight: 600; text-align: center; margin: 0px;">
+                    <span data-translate-text></span>
+                    <a class="CtaBtn" target="_blank" href="" style="text-decoration: none; color:#259C46;"></a>
+                </p>
                 <div class="footer_links">
-                    <!-- <a class="CtaBtn link" href="" target="_blank">Request a feature</a>
-                    <a class="CtaBtn link" href="" target="_blank">FAQs</a>
-                    <a class="CtaBtn link" href="" target="_blank">Blogs</a>
-                    <p class="CtaBtn link" id="unsubscribe">Unsubscribe</p> -->
-                    <p style="font-weight: bold;">version <span id="extension-version"></span></p>
+                    <a class="CtaBtn link" href="" target="_blank"></a>
+                    <a class="CtaBtn link" href="" target="_blank"></a>
+                    <p style="font-weight: bold;"><span id="extension-version"></span></p>
                 </div>
             </div>
         <div>

@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
   "update_url": "https://clients2.google.com/service/update2/crx",
-  "name": "WA Sender - Bulk WhatsApp Message Sender",
-  "version": "1.0.7",
+  "name": "WA Sender - Free Bulk Message Sender",
+  "version": "4.5.2",
   "default_locale": "en",
-  "description": "__MSG_Description__",
+  "description": "__MSG_Desc__",
   "icons": {
-    "16": "logo/pro-small.png",
-    "48": "logo/pro-medium.png",
-    "128": "logo/pro-large.png"
+    "16": "logo/small.png",
+    "48": "logo/medium.png",
+    "128": "logo/large.png"
   },
   "content_scripts": [
     {
@@ -17,16 +17,14 @@
       ],
       "js": [
         "js/library/jquery.js",
-        "js/library/driver.js.iife.js",
-        "js/data.js",
-        "js/ga-code.js",
-        "js/translate.js",
-        "js/driver.js",
-        "js/messenger.js",
+        "js/Utils/data.js",
+        "js/Utils/ga-code.js",
+        "js/Utils/helper.js",
+        "js/Utils/popup-handler.js",
+        "js/Utils/messenger.js",
         "js/content.js"
       ],
       "css": [
-        "css/driver.css",
         "css/content.css"
       ]
     }
@@ -35,7 +33,8 @@
     {
       "resources": [
         "/js/inject.js",
-        "/logo/*"
+        "/logo/*",
+        "/sounds/*"
       ],
       "matches": [
         "<all_urls>"
@@ -43,18 +42,19 @@
     }
   ],
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "js/background.js",
+    "type": "module"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "WA Sender - Bulk WhatsApp Message Sender"
+    "default_title": "WA Sender"
   },
   "permissions": [
-    "bookmarks",
     "storage",
     "unlimitedStorage",
     "notifications",
     "tabs",
+    "activeTab",
     "identity",
     "identity.email"
   ]

@@ -1,38 +1,44 @@
-This is a **completely FREE** Chrome extension that helps you connect with your customers by sending bulk messages via WhatsApp — **for free**.
+# Pro Sender
 
----
+## Installation
 
-## ✨ Features
+1. Clone the repository:
+    ```bash
+    git clonegit@github.com:alphaextensions/pro-sender.git
+    ```
+2. Open Chrome and navigate to `chrome://extensions/`.
+3. Enable "Developer mode" by clicking the toggle switch in the top right corner.
+4. Click "Load unpacked" and select the cloned repository folder.
 
-- 📢 **Unlimited Broadcast Messages**  
-- 📎 **Unlimited File Attachments**  
-- ✏️ **Customized Messages**  
-- 📝 **Add Captions**  
-- 🔗 **Generate WhatsApp Chat Links**  
-- 📤 **Send Messages in Batches**  
-- ⏳ **Control Time Delay** & ⏰ **Add Random Delays**  
-- 📅 **Schedule Your Campaigns**  
-- 📂 **Upload Numbers from Excel Files**  
-- 👥 **Export Group Members**  
-- ⚡ **Quick Replies**  
-- 📊 **Detailed Campaign Reports**  
-- ⏹️ **Pause and ▶️ Resume Campaigns**  
-- 📄 **Save Message Templates**
+## Code Structure
 
----
+### 📦 js/
 
-## 🚀 Installation
+**background.js**: Handles background processes and events for the extension.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/jayeshkaithwas/WhatsApp-Web-Extention.git
-   ```
+**content.js**: Manages the interaction between the extension and the web page content.
 
-2. **Load the extension in Chrome:**
-   - Open **Chrome**.
-   - Go to **Extensions** (`chrome://extensions/`).
-   - Enable **Developer mode** (toggle at the top right).
-   - Click **Load unpacked**.
-   - Select the `WhatsApp-Web-Extention` folder you cloned.
+**popup.js**: Handles the logic for the extension's popup UI.
 
----
+**inject.js**: Implements the logic and functions from the WhatsApp API library, injecting them into the WhatsApp Web page.
+
+#### 📂 js/utils 
+
+- **data.js**: Contains constant or static data used by `content.js` and `popup.js`. This data is also updated by the config data API.
+- **helper.js**: Contains common functions used by `content.js` and `popup.js`.
+- **ga-code.js**: Tracks user activity on Google Analytics.
+- **popup-handler.js** Contains all the popups displayed in content.
+
+#### 📂 js/library
+
+- **[xlsx.full.min.js](https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js)**: A library for reading and writing spreadsheet files.
+- **[intlTelInput.min.js](https://cdnjs.com/libraries/intl-tel-input)**: A library for handling international telephone inputs.
+- **[intlTelInput.utils.js](https://cdnjs.com/libraries/intl-tel-input)**: Utility functions for the international telephone input library.
+- **[jquery.js](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js)**: A fast, small, and feature-rich JavaScript library.
+- **[libphonenumber.min.js](https://cdnjs.com/libraries/libphonenumber-js)**: Google's library for parsing, formatting, and validating international phone numbers.
+
+> Note: The libraries in this folder should be updated to their latest versions when available. 
+
+#### 📂 js/impact-hero
+
+- Contains Javascripts for impact-hero SDK.
